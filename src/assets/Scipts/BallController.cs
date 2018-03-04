@@ -3,80 +3,111 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using SharpBCI;
-		
 
-public class BallController : MonoBehaviour {
+// At this point this is MUCH more than just the ball controller...
 
-	private Rigidbody rb;
-	public float speed;
+public class BallController : MonoBehaviour
+{
 
-	public static int LEFT_ID = 1;
-	public static int RIGHT_ID = 2;
+    public GameObject timerObj;
+    private Rigidbody rb;
+    public float speed;
 
+    public static int UP_ID = 1;
+    public static int DOWN_ID = 2;
 
-	public float trainingTime = 30;
+    public float trainingTime = 30;
+    public bool eeg = true;
+    public float timerTime = 10;
+    private float timer;
+    private float time;
 
-	public Text leftText;
-	public Text rightText;
+    public Text upText;
+    public Text downText;
+    public Text score;
+   
 
-	public bool IsTraining { get { return isTraining; } }
+    public bool IsTraining { get { return isTraining; } }
 
-	private bool isTraining;
-	private bool trainingLeft;
-	private bool trainingRight;
+    private bool isTraining;
+    private bool trainingUp;
+    private bool trainingDown;
 
-	private float _leftTrainedTime;
-	private float _rightTrainedTime;
+    private float _upTrainedTime;
+    private float _downTrainedTime;
 
-	private float started;
+    private float started;
 
-	private bool rightQueued;
-	private bool leftQueued;
+    private bool downQueue;
+    private bool upQueue;
 
+    private Vector3 originalPos;
 
+    private bool moving;
 
-	// Use this for initialization
-	void Start () {
-		rb = GetComponent<Rigidbody> ();
-		SharpBCIController.BCI.ClearTrainingData ();
-		Debug.Log ("after clearing data");
-		started = Time.time;
-		isTraining = true;
-	}
+    // Use this for initialization
+    void Start()
+    {
+        originalPos = gameObject.transform.position;
+        rb = GetComponent<Rigidbody>();
+        if (eeg)
+        {
+            SharpBCIController.BCI.ClearTrainingData();
+            started = Time.time;
+            isTraining = true;
+        }
+        else
+        {
+            StartCoroutine(ToggleText(upText, 0f));
+            StartCoroutine(ToggleText(downText, 0f));
+        }
+    }
 
-	private int x;
-	private int y;
-	// FixedUpdate is called once per time frame
+    private int x;
+    private int y;
+    // FixedUpdate is called once per time frame
 
-	void Update() {
-        if (isTraining) {
+    void Update()
+    {
+        if (timerObj.GetComponent<TimerController>().IsTiming)
+        {
+            rb.isKinematic = true;
+        } else
+        {
+            rb.isKinematic = false;
+        }
+        if (isTraining)
+        {
             UpdateTraining();
         }
-	}
+    }
 
-    //void FixedUpdate()
-    //{
-    //    x = x + 1;
-    //    y = y + 1;
-    //    float moveH = Input.GetAxis("Horizontal");
-    //    float moveV = Input.GetAxis("Vertical");
-    //    Debug.Log("Fixed Update Axis: " + Input.GetAxis("Horizontal").ToString());
-    //    if (Input.GetAxis("Horizontal") < 0)
-    //    {
-    //        _leftTrainedTime += Time.deltaTime;
-    //    }
-    //    else if (Input.GetAxis("Horizontal") > 0)
-    //    {
-    //        _rightTrainedTime += Time.deltaTime;
-    //    }
+    IEnumerator ToggleText(Text text, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (text.enabled)   
+        {
+            text.enabled = false;
+        }
+        else
+        {
+            text.enabled = true;   
+        }
+    }
 
-    //    leftText.text = "Left Count: " + _leftTrainedTime.ToString();
-    //    rightText.text = "Right Count: " + _rightTrainedTime.ToString();
-
-    //    //Vector3 movement = new Vector3 (x, y, z);
-    //    Vector3 movement = new Vector3(moveH, 0, moveV);
-    //    rb.AddForce(movement * speed);
-    //}
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            score.text = "It took " + timerObj.GetComponent<TimerController>().getTime() + " seconds";
+            rb.isKinematic = true;
+            Destroy(other.gameObject);
+            //gameObject.transform.position = originalPos;
+            Vector3 currentPos = gameObject.transform.position;
+            gameObject.transform.position = originalPos;
+            timerObj.GetComponent<TimerController>().reset();
+        }
+    }
 
     SharpBCI.MovingAverageFilter movementFilter = new SharpBCI.MovingAverageFilter(3);
 
@@ -84,87 +115,98 @@ public class BallController : MonoBehaviour {
     {
         float moveH = Input.GetAxis("Horizontal");
         float moveV = Input.GetAxis("Vertical");
-        if (rightQueued)
-        {
-            var nextH = (float)movementFilter.Filter(speed);
-            rb.AddForce(new Vector3(nextH, 0, moveV));
-            rightQueued = false;
-        }
-        else if (leftQueued)
-        {
-            var nextH = (float)movementFilter.Filter(-speed);
-            rb.AddForce(new Vector3(nextH, 0, moveV));
-            leftQueued = false;
 
+        if (eeg)
+        {
+            if (downQueue)
+            {
+                var nextV = (float)movementFilter.Filter(speed);
+                rb.AddForce(new Vector3(0, 0, nextV));
+                downQueue = false;
+            }
+            else if (upQueue)
+            {
+                var nextV = (float)movementFilter.Filter(-speed);
+                rb.AddForce(new Vector3(0, 0, nextV));
+                upQueue = false;
+
+            }
+        }
+        else
+        {
+            rb.AddForce(new Vector3(moveH, 0.0f, moveV) * speed);
         }
     }
 
     void UpdateTraining()
     {
-        if (trainingLeft)
+        if (trainingUp)
         {
-            _leftTrainedTime += Time.deltaTime;
-            leftText.text = "Left Count: " + _leftTrainedTime.ToString();
+            _upTrainedTime += Time.deltaTime;
+            upText.text = "Up Count: " + _upTrainedTime.ToString();
 
         }
-        else if (trainingRight)
+        else if (trainingDown)
         {
-            _rightTrainedTime += Time.deltaTime;
-            rightText.text = "Right Count: " + _rightTrainedTime.ToString();
+            _downTrainedTime += Time.deltaTime;
+            downText.text = "Down Count: " + _downTrainedTime.ToString();
         }
 
-        if (isTraining && _rightTrainedTime >= trainingTime && _rightTrainedTime >= trainingTime)
+        if (isTraining && _downTrainedTime >= trainingTime && _downTrainedTime >= trainingTime)
         {
             Debug.Log("Done Training");
-            if (trainingRight)
-                SharpBCIController.BCI.StopTraining(RIGHT_ID);
-            if (trainingLeft)
-                SharpBCIController.BCI.StopTraining(LEFT_ID);
+            if (trainingDown)
+                SharpBCIController.BCI.StopTraining(DOWN_ID);
+            if (trainingUp)
+                SharpBCIController.BCI.StopTraining(UP_ID);
 
-            SharpBCIController.BCI.AddTrainedHandler(RIGHT_ID, OnTrainedEvent);
-            SharpBCIController.BCI.AddTrainedHandler(LEFT_ID, OnTrainedEvent);
+            SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, OnTrainedEvent);
+            SharpBCIController.BCI.AddTrainedHandler(UP_ID, OnTrainedEvent);
             isTraining = false;
 
-            SharpBCIController.BCI.AddTrainedHandler(RIGHT_ID, OnTrainedEvent);
-            SharpBCIController.BCI.AddTrainedHandler(LEFT_ID, OnTrainedEvent);
+            SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, OnTrainedEvent);
+            SharpBCIController.BCI.AddTrainedHandler(UP_ID, OnTrainedEvent);
         }
 
 
-        if (Input.GetAxis("Horizontal") > 0)
+        if (Input.GetAxis("Vertical") < 0)
         {
-            if (trainingLeft)
+            if (trainingUp)
             {
-                SharpBCIController.BCI.StopTraining(LEFT_ID);
-                trainingLeft = false;
+                SharpBCIController.BCI.StopTraining(UP_ID);
+                trainingUp = false;
             }
-            if (!trainingRight)
+            if (!trainingDown)
             {
-                SharpBCIController.BCI.StartTraining(RIGHT_ID);
-                trainingRight = true;
+                SharpBCIController.BCI.StartTraining(DOWN_ID);
+                trainingDown = true;
             }
 
-        } else if (Input.GetAxis("Horizontal") < 0)
+        }
+        else if (Input.GetAxis("Vertical") > 0)
         {
-            if (trainingRight)
+            if (trainingDown)
             {
-                SharpBCIController.BCI.StopTraining(RIGHT_ID);
-                trainingRight = false;
+                SharpBCIController.BCI.StopTraining(DOWN_ID);
+                trainingDown = false;
             }
-            else if (!trainingLeft)
+            else if (!trainingUp)
             {
-                SharpBCIController.BCI.StartTraining(LEFT_ID);
-                trainingLeft = true;
+                SharpBCIController.BCI.StartTraining(UP_ID);
+                trainingUp = true;
             }
-        } else
+        }
+        else
         {
-            if (trainingRight)
+            if (trainingDown)
             {
-                SharpBCIController.BCI.StopTraining(RIGHT_ID);
-                trainingRight = false;
-            } else if (trainingLeft)
+                SharpBCIController.BCI.StopTraining(DOWN_ID);
+                trainingDown = false;
+            }
+            else if (trainingUp)
             {
-                SharpBCIController.BCI.StopTraining(LEFT_ID);
-                trainingLeft = false;
+                SharpBCIController.BCI.StopTraining(UP_ID);
+                trainingUp = false;
             }
 
         }
@@ -174,8 +216,8 @@ public class BallController : MonoBehaviour {
 
     void OnTrainedEvent(TrainedEvent evt)
     {
-        rightQueued = evt.id == RIGHT_ID;
-        leftQueued = evt.id == LEFT_ID;
+        downQueue = evt.id == DOWN_ID;
+        upQueue = evt.id == UP_ID;
 
     }
 }
