@@ -6,7 +6,7 @@ public class CharacterControl : MonoBehaviour {
     private enum ControlMode
     {
         Tank,
-		Key
+		Key,
     }
 
 	[SerializeField] private Vector3 pos = Vector3.zero;

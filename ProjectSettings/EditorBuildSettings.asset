@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: assets/_scenes/MiniGame.unity
     guid: 86c972d4e14f147d490c7de2c970f90a
-  - enabled: 1
+  - enabled: 0
     path: assets/_scenes/map.unity
     guid: 71e6d21e4fb0ccf4697a0f3a13fa9c9f
   - enabled: 1
-    path: assets/_scenes/Roll-a-ball.unity
-    guid: f5ecd2294d620416d9c805bada1641f3
+    path: assets/_scenes/MiniGame2.unity
+    guid: 131869c1638ddf947af0b601527093a5
+  - enabled: 1
+    path: assets/_scenes/Forest Scene.unity
+    guid: b7e63e0358dc2c64e84dd8d71e63a069

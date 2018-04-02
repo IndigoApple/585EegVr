@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class LoadLevel : MonoBehaviour {
 
-	public GameObject obj;
-	public BallController trainer;
+	//public GameObject obj;
+	//public BallController trainer;
 
 	// Use this for initialization
 	void Start () {
-		trainer = obj.GetComponent<BallController> ();
+		//trainer = obj.GetComponent<BallController> ();
 	}
 	
 	// Update is called once per frame
@@ -19,8 +19,9 @@ public class LoadLevel : MonoBehaviour {
 	}
 
 	// changes scene, but only if training is over
-	public void ChangeScene() {
-		if (!trainer.IsTraining)
-			SceneManager.LoadScene ("map", LoadSceneMode.Single);
+	public void ChangeScene(string scenename) {
+		//if (!trainer.IsTraining)
+		print("hi");
+			SceneManager.LoadScene (scenename, LoadSceneMode.Single);
 	}
 }
