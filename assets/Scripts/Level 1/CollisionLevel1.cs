@@ -22,6 +22,7 @@ public class CollisionLevel1 : MonoBehaviour {
 		objects [1,12] = -1;
 		objects [1,14] = -1;
 		objects [1,17] = -1;
+        objects [2,12] = -1;
 		objects [5,12] = -1;
 		objects [7,11] = -1;
 		objects [8,13] = -1;

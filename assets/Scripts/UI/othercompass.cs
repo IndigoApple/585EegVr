@@ -51,7 +51,6 @@ public class othercompass : MonoBehaviour {
 			//player2.transform.position += Vector3.forward;
 			Vector3 dir = transform.position;
 			inputDirection = Quaternion.LookRotation (Vector3.left);
-			print (inputDirection.y);
 			inputDirection.z = -inputDirection.y;
 			inputDirection.x = 0;
 			inputDirection.y = 0;
