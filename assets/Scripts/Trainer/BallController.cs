@@ -153,7 +153,7 @@ public class BallController : MonoBehaviour
             downText.text = "Down Count: " + _downTrainedTime.ToString();
         }
 
-        if (isTraining && _downTrainedTime >= trainingTime && _downTrainedTime >= trainingTime)
+        if (isTraining && _upTrainedTime >= trainingTime && _downTrainedTime >= trainingTime)
         {
             Debug.Log("Done Training");
             if (trainingDown)
