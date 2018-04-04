@@ -1,0 +1,9 @@
+
+*.log
+Temp/*
+.vs/*
+Build/*
+Library/*
+UnityPacketManager/*
+585*
+*.log
