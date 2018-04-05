@@ -315,10 +315,10 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll</HintPath>
  </Reference>
  <Reference Include="SharpBCI">
- <HintPath>/Users/Madhu/Downloads/585EegVr-demo2/Assets/lib/SharpBCI.dll</HintPath>
+ <HintPath>/Users/Madhu/Desktop/585EegVr-demo2/Assets/lib/SharpBCI.dll</HintPath>
  </Reference>
  <Reference Include="SharpOSC">
- <HintPath>/Users/Madhu/Downloads/585EegVr-demo2/Assets/lib/SharpOSC.dll</HintPath>
+ <HintPath>/Users/Madhu/Desktop/585EegVr-demo2/Assets/lib/SharpOSC.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>/Users/Madhu/Library/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>

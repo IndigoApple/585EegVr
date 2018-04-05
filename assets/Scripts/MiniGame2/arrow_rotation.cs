@@ -19,6 +19,7 @@ public class arrow_rotation : MonoBehaviour {
 	void Update () {
 		if ( Input.GetAxis("Horizontal") == -1){
 			arrow.transform.Rotate(new Vector3(0, 0, Time.deltaTime*35));
+
 		}
 		if ( Input.GetAxis("Horizontal") == 1){
 			arrow.transform.Rotate(new Vector3(0, 0, -Time.deltaTime*35));
@@ -27,14 +28,14 @@ public class arrow_rotation : MonoBehaviour {
 		float otherangle = arrow.transform.eulerAngles.z;
 		//Debug.Log (otherangle);
 
-		if (otherangle >= 280 && otherangle <= 350) {
+		if (otherangle > 225 && otherangle <= 325) {
 			arrow.GetComponentInChildren<Text> ().text = "Go right";
 			//Debug.Log ("right");
 			rightmovement();
 			OnPress ();
 			OnRelease ();
 		}
-		if (otherangle >= 190 && otherangle <= 260) {
+		if (otherangle > 135 && otherangle <= 225) {
 			arrow.GetComponentInChildren<Text> ().text = "Go down";
 			//Debug.Log ("down");
 			downmovement ();
@@ -42,7 +43,7 @@ public class arrow_rotation : MonoBehaviour {
 			OnRelease ();
 		}
 
-		if (otherangle >= 10 && otherangle <= 80) {
+		if (otherangle >= 0 && otherangle <= 45 || otherangle <= 360 && otherangle > 325) {
 			arrow.GetComponentInChildren<Text> ().text = "Go up";
 			//Debug.Log ("up");
 			upmovement();
@@ -50,7 +51,7 @@ public class arrow_rotation : MonoBehaviour {
 			OnRelease ();
 		}
 
-		if (otherangle >= 100 && otherangle <= 170) {
+		if (otherangle > 45 && otherangle <= 135) {
 			arrow.GetComponentInChildren<Text> ().text = "Go left";
 			//Debug.Log ("left");
 			leftmovement ();
