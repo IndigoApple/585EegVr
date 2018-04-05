@@ -7,123 +7,104 @@ using System.Collections.Generic;
 using System.Threading;
 
 
-public enum SharpBCIControllerType
-{
-    MUSE,
-    TONE_GENERATOR,
-    TWO_TONE_GENERATOR,
-    CSV_READER
+public enum SharpBCIControllerType {
+	MUSE,
+	TONE_GENERATOR,
+	TWO_TONE_GENERATOR,
+	CSV_READER
 }
 
-public class UnityLogger : ILogOutput
-{
+public class UnityLogger : ILogOutput {
 
-    public void Dispose()
-    {
-        // no cleanup required
-    }
+	public void Dispose() {
+		// no cleanup required
+	}
 
-    public void Log(LogLevel level, object message)
-    {
-        switch (level)
-        {
-            case LogLevel.INFO:
-                UnityEngine.Debug.Log(message);
-                break;
-            case LogLevel.WARNING:
-                UnityEngine.Debug.LogWarning(message);
-                break;
-            case LogLevel.ERROR:
-                UnityEngine.Debug.LogError(message);
-                break;
-            default:
-                return;
-        }
-    }
+	public void Log(LogLevel level, object message) {
+		switch (level) {
+			case LogLevel.INFO:
+				UnityEngine.Debug.Log(message);
+				break;
+			case LogLevel.WARNING:
+				UnityEngine.Debug.LogWarning(message);
+				break;
+			case LogLevel.ERROR:
+				UnityEngine.Debug.LogError(message);
+				break;
+			default:
+				return;
+		}
+	}
 }
 
-public class SharpBCIController : MonoBehaviour
-{
+public class SharpBCIController : MonoBehaviour {
 
-    public const int OSC_DATA_PORT = 5000;
-    public const string LOG_NAME = "SharpBCI_log.txt";
 
-    public static SharpBCI.SharpBCI BCI;
-    public static EEGDeviceAdapter adapter;
+	public const int OSC_DATA_PORT = 5000;
+	public const string LOG_NAME = "SharpBCI_log.txt";
 
-    public SharpBCIControllerType bciType;
+	public static SharpBCI.SharpBCI BCI;
+	public static EEGDeviceAdapter adapter;
 
-    public EEGDataType dataType;
+	public SharpBCIControllerType bciType;
 
-    public string CSVReadFilePath;
+	public EEGDataType dataType;
 
-    static SharpBCIController _inst;
+	public string CSVReadFilePath;
 
-    Process museIOProcess;
+	static SharpBCIController _inst;
 
-    bool isTheHighlander = false;
+	Process museIOProcess;
 
-    public delegate void addBlink();
-    private  addBlink ab;
+	bool isTheHighlander = false;
 
-    public void addBlinkHandler(addBlink ab)
+    public void addBlinkHandler(BlinkAdapter.blinkHandler bh)
     {
-        UnityEngine.Debug.Log("Added blink handler");
-        this.ab = new addBlink(ab);
+        if (adapter != null)
+        {
+            ((BlinkAdapter) adapter).addHandler(bh);
+        }
     }
 
-    void handleBlink()
-    {
-        UnityEngine.Debug.Log("Blinked");
-        ab();
-    }
+	// Use this for initialization
+	void Awake() {
+		if (_inst != null) {
+			Destroy (gameObject);
+			return;
+		}
+		_inst = this;
+		DontDestroyOnLoad (gameObject);
+		isTheHighlander = true;
 
-    // Use this for initialization
-    void Awake()
-    {
-        if (_inst != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        _inst = this;
-        DontDestroyOnLoad(gameObject);
-        isTheHighlander = true;
+		// FileLogger requires actual pathnames not Unity
+		string logName = System.IO.Path.Combine(Application.persistentDataPath.Replace('/', System.IO.Path.DirectorySeparatorChar), LOG_NAME);
+		UnityEngine.Debug.Log("Writing sharpBCI log to: " + logName);
+		// configure logging
+		SharpBCI.Logger.AddLogOutput (new UnityLogger ());
+		//SharpBCI.Logger.AddLogOutput(new FileLogger(logName));
 
-        // FileLogger requires actual pathnames not Unity
-        string logName = System.IO.Path.Combine(Application.persistentDataPath.Replace('/', System.IO.Path.DirectorySeparatorChar), LOG_NAME);
-        UnityEngine.Debug.Log("Writing sharpBCI log to: " + logName);
-        // configure logging
-        SharpBCI.Logger.AddLogOutput(new UnityLogger());
-        //SharpBCI.Logger.AddLogOutput(new FileLogger(logName));
+		//EEGDeviceAdapter adapter;
+		if (bciType == SharpBCIControllerType.MUSE) {
+			// start Muse-IO
+			try {
+				museIOProcess = new Process ();
+				museIOProcess.StartInfo.FileName = System.IO.Path.Combine (Application.streamingAssetsPath, "MuseIO", "muse-io");
+				UnityEngine.Debug.Log("filename: " + museIOProcess.StartInfo.FileName);
+				// default is osc.tcp://localhost:5000, but we expect udp
+				museIOProcess.StartInfo.Arguments = "--osc osc.udp://localhost:5000 --device Muse-4B45";
+				museIOProcess.StartInfo.CreateNoWindow = true;
+				museIOProcess.StartInfo.UseShellExecute = false;
+				museIOProcess.Start ();
+				museIOProcess.PriorityClass = ProcessPriorityClass.RealTime;
+			} catch (System.Exception e) {
+				UnityEngine.Debug.LogError ("Could not open muse-io:");
+				UnityEngine.Debug.LogException (e);
+			}
 
-        //EEGDeviceAdapter adapter;
-        if (bciType == SharpBCIControllerType.MUSE)
-        {
-            // start Muse-IO
-            try
-            {
-                museIOProcess = new Process();
-                museIOProcess.StartInfo.FileName = System.IO.Path.Combine(Application.streamingAssetsPath, "MuseIO", "muse-io");
-                UnityEngine.Debug.Log("filename: " + museIOProcess.StartInfo.FileName);
-                // default is osc.tcp://localhost:5000, but we expect udp
-                museIOProcess.StartInfo.Arguments = "--osc osc.udp://localhost:5000 --device Muse-4B45";
-                museIOProcess.StartInfo.CreateNoWindow = true;
-                museIOProcess.StartInfo.UseShellExecute = false;
-                museIOProcess.Start();
-                museIOProcess.PriorityClass = ProcessPriorityClass.RealTime;
-            }
-            catch (System.Exception e)
-            {
-                UnityEngine.Debug.LogError("Could not open muse-io:");
-                UnityEngine.Debug.LogException(e);
-            }
-
-            adapter = new BlinkAdapter(OSC_DATA_PORT, handleBlink);
-        }
-        else if (bciType == SharpBCIControllerType.TONE_GENERATOR)
-        {
-            adapter = new DummyAdapter(new DummyAdapterSignal(new double[] { 
+            //adapter = new RemoteOSCAdapter(OSC_DATA_PORT);
+            adapter = new BlinkAdapter(OSC_DATA_PORT);
+        } else if (bciType == SharpBCIControllerType.TONE_GENERATOR) {
+			adapter = new DummyAdapter (new DummyAdapterSignal (new double[] { 
 				// alpha
 				10, 
 				// beta
@@ -136,19 +117,17 @@ public class SharpBCIController : MonoBehaviour
 				6,
 				// simulate AC interference
 				60,
-            }, new double[] {
-                512,
-                512,
-                512,
-                512,
-                512,
-                512
-            }), 220, 2);
-        }
-        else if (bciType == SharpBCIControllerType.TWO_TONE_GENERATOR)
-        {
-            var signals = new DummyAdapterSignal[] {
-                new DummyAdapterSignal (new double[] { 
+			}, new double[] {
+				512,
+				512,
+				512,
+				512,
+				512,
+				512
+			}), 220, 2);
+		} else if (bciType == SharpBCIControllerType.TWO_TONE_GENERATOR) {
+			var signals = new DummyAdapterSignal[] { 
+				new DummyAdapterSignal (new double[] { 
 					// alpha
 					10, 
 					// beta
@@ -159,14 +138,14 @@ public class SharpBCIController : MonoBehaviour
 					2, 
 					// theta
 					6,
-                }, new double[] {
-                    512,
-                    0,
-                    0,
-                    0,
-                    0
-                }),
-                new DummyAdapterSignal (new double[] { 
+				}, new double[] {
+					512,
+					0,
+					0,
+					0,
+					0
+				}),
+				new DummyAdapterSignal (new double[] { 
 					// alpha
 					10, 
 					// beta
@@ -177,58 +156,46 @@ public class SharpBCIController : MonoBehaviour
 					2, 
 					// theta
 					6,
-                }, new double[] {
-                    0,
-                    512,
-                    0,
-                    0,
-                    0
-                })
-            };
-            adapter = new InstrumentedDummyAdapter(signals, 220, 2);
-        }
-        else if (bciType == SharpBCIControllerType.CSV_READER)
-        {
-            double sampleRate = 220;
-            adapter = new CSVReadAdapter(CSVReadFilePath, sampleRate);
-        }
-        else
-        {
-            throw new System.Exception("Invalid bciType");
-        }
+				}, new double[] {
+					0,
+					512,
+					0,
+					0,
+					0
+				})
+			};
+			adapter = new InstrumentedDummyAdapter (signals, 220, 2);
+		} else if (bciType == SharpBCIControllerType.CSV_READER) {
+			double sampleRate = 220;
+			adapter = new CSVReadAdapter (CSVReadFilePath, sampleRate);
+		} else {
+			throw new System.Exception("Invalid bciType");
+		}
 
-        
+		BCI = new SharpBCIBuilder()
+			.EEGDeviceAdapter(adapter)
+			.PipelineFile(System.IO.Path.Combine(Application.streamingAssetsPath, "default_pipeline.json"))
+			.Build();
 
-        BCI = new SharpBCIBuilder()
-            .EEGDeviceAdapter(adapter)
-            .PipelineFile(System.IO.Path.Combine(Application.streamingAssetsPath, "default_pipeline.json"))
-            .Build();
+		if (bciType != SharpBCIControllerType.CSV_READER) {
+			BCI.LogRawData(dataType);
+		}
+	}
 
-        if (bciType != SharpBCIControllerType.CSV_READER)
-        {
-            BCI.LogRawData(dataType);
-        }
-    
-
-    }
-
-    void OnDestroy()
-    {
-        if (!isTheHighlander)
-            return;
-
-        if (bciType == SharpBCIControllerType.MUSE)
-        {
-            if (museIOProcess != null && !museIOProcess.HasExited)
-            {
-                museIOProcess.Kill();
-                museIOProcess.WaitForExit();
-            }
-        }
-
-        BCI.Close();
-        SharpBCI.Logger.Dispose();
-    }
+	void OnDestroy() {
+		if (!isTheHighlander)
+			return;
+		
+		if (bciType == SharpBCIControllerType.MUSE) {
+			if (museIOProcess != null && !museIOProcess.HasExited) {
+				museIOProcess.Kill();
+				museIOProcess.WaitForExit();
+			}
+		}
+			
+		BCI.Close();
+		SharpBCI.Logger.Dispose();
+	}
 }
 
 public class BlinkAdapter : EEGDeviceAdapter
@@ -241,6 +208,14 @@ public class BlinkAdapter : EEGDeviceAdapter
     public delegate void blinkHandler();
 
     private blinkHandler bh;
+    private bool handled = false;
+
+    public void addHandler(blinkHandler handler)
+    {
+        this.bh = handler;
+        handled = true;
+    }
+
     /**
      * Port number that OSC packets can be retrieved from
      */
@@ -257,10 +232,9 @@ public class BlinkAdapter : EEGDeviceAdapter
     bool stopRequested;
     DateTime lastPacketRecieved = DateTime.UtcNow;
 
-    public BlinkAdapter(int port, blinkHandler bh) : base(4, 220)
+    public BlinkAdapter(int port) : base(4, 220)
     {
         this.port = port;
-        this.bh = new blinkHandler(bh);
     }
 
     /**
@@ -356,7 +330,14 @@ public class BlinkAdapter : EEGDeviceAdapter
         {
             if (((int)msg.Arguments[0]) == 1)
             {
-                bh();
+                UnityEngine.Debug.Log(msg.Address.ToString() + " blinked");
+                if (handled)
+                {
+                    UnityEngine.Debug.Log("It's alive");
+                } else
+                {
+                    UnityEngine.Debug.Log("It's ddead");
+                }
             }
         }
         if (!typeMap.ContainsKey(msg.Address))
