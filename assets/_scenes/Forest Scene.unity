@@ -2418,7 +2418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b85003f8bed61642bc1ae04c86283f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_controlMode: 0
+  m_controlMode: 1
   m_gameMode: 1
   arrow: {fileID: 702481154}
   player: {fileID: 1793002532}

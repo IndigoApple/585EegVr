@@ -14,6 +14,7 @@ public class EEGToController : MonoBehaviour {
 	private bool downQueue;
 	private bool upQueue;
 	public GameObject EEG;
+	private arrow_rotation rotation;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +22,7 @@ public class EEGToController : MonoBehaviour {
 		SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
 		SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
 		EEG.GetComponent<SharpBCIController> ().addBlinkHandler (BlinkEvent);
+		rotation = arrow.GetComponent<arrow_rotation>();
 	}
 	
 	// Update is called once per frame
@@ -41,6 +43,7 @@ public class EEGToController : MonoBehaviour {
 	}
 
 	void BlinkEvent() {
-		arrow.GetComponent<arrow_rotation> ().blinked ();
+		Debug.Log ("blink event called");
+		rotation.Blinked ();
 	}
 }

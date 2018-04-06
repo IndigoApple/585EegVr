@@ -23,6 +23,8 @@ public class arrow_rotation : MonoBehaviour {
 	public GameObject player;
 	public int direction = 0;
 	Renderer rd;
+	private float otherangle;
+	private bool blinked;
 
 	// Use this for initialization
 	void Start () {
@@ -57,7 +59,7 @@ public class arrow_rotation : MonoBehaviour {
 			arrow.transform.Rotate(new Vector3(0, 0, -Time.deltaTime*35));
 		}
 		//float Angle = Quaternion.Angle(Quaternion.Euler(new Vector3(0,0,360)), arrow.transform.rotation);
-		float otherangle = arrow.transform.eulerAngles.z;
+		otherangle = arrow.transform.eulerAngles.z;
 		//Debug.Log (otherangle);
 
 		if (otherangle > 225 && otherangle <= 325) {
@@ -92,21 +94,31 @@ public class arrow_rotation : MonoBehaviour {
 
 	void EEGUpdate() {
 		arrow.transform.Rotate (new Vector3 (0, 0, direction * Time.deltaTime * 35));
-		float otherangle = arrow.transform.eulerAngles.z;
+		otherangle = arrow.transform.eulerAngles.z;
 
+		int i = 0;
 		if (otherangle > 225 && otherangle <= 325) {
 			arrow.GetComponentInChildren<Text> ().text = "Go right";
+			i = 2;
 		}
 		if (otherangle > 135 && otherangle <= 225) {
 			arrow.GetComponentInChildren<Text> ().text = "Go down";
+			i = 4;
 		}
 
 		if (otherangle >= 0 && otherangle <= 45 || otherangle <= 360 && otherangle > 325) {
 			arrow.GetComponentInChildren<Text> ().text = "Go up";
+			i = 3;
 		}
 
 		if (otherangle > 45 && otherangle <= 135) {
 			arrow.GetComponentInChildren<Text> ().text = "Go left";
+			i = 1;
+		}
+
+		if (blinked) {
+			movement (i);
+			blinked = false;
 		}
 	}
 
@@ -137,24 +149,8 @@ public class arrow_rotation : MonoBehaviour {
 		}
 	}
 
-	public void blinked() {
-		float otherangle = arrow.transform.eulerAngles.z;
-		int i = 0;
-		if (otherangle > 225 && otherangle <= 325) {
-			i = 2;
-		}
-		if (otherangle > 135 && otherangle <= 225) {
-			i = 4;
-		}
-
-		if (otherangle >= 0 && otherangle <= 45 || otherangle <= 360 && otherangle > 325) {
-			i = 3;
-		}
-
-		if (otherangle > 45 && otherangle <= 135) {
-			i = 1;
-		}
-		movement (i);
+	public void Blinked() {
+		blinked = true;
 	}
 
 	void OnPress()
