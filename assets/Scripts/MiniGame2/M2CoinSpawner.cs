@@ -13,7 +13,6 @@ public class M2CoinSpawner : MonoBehaviour {
 	
     public void create()
     {
-        float num = 0;
         Instantiate(coin, new Vector3(generateRandom(), 0.5f, generateRandom()), transform.rotation);
     }
 

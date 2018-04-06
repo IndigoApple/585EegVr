@@ -22,6 +22,8 @@ public class CharacterControl : MonoBehaviour {
 
 	public bool canmove = true;
 	public bool switchmove = false;
+	public int move = 0;
+
 	private int eventx;
 	private int eventy;
 	private bool calleventnext;
@@ -200,6 +202,68 @@ public class CharacterControl : MonoBehaviour {
 		JumpingAndLanding();
 	}
 
+	private void CompassUpdate() {
+		if (switchmove) {
+			switchmove = false;
+			canmove = true;
+			collision.endEvent (eventx, eventy);
+			calleventnext = false;
+			moving = 1;
+		}
+		if (!canmove) {
+			moving = 0;
+			m_animator.SetFloat("MoveSpeed", m_moveSpeed * moving);
+			return;
+		}
+		if(move == 1 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Left
+			angle = 270;
+			moving = 1;
+			if (CheckMovement (pos + Vector3.left * 5)) {
+				pos += Vector3.left * 5;
+			}
+		}
+		if(move == 2 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Right
+			angle = 90;
+			moving = 1;
+			if (CheckMovement (pos + Vector3.right * 5)) {
+				pos += Vector3.right * 5;
+			}
+		}
+		if(move == 3 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Up
+			angle = 0;
+			moving = 1;
+			if (CheckMovement (pos + Vector3.forward * 5)) {
+				pos += Vector3.forward * 5;
+			}
+		}
+		if(move == 4 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Down
+			angle = 180;
+			moving = 1;
+			if (CheckMovement (pos + Vector3.back * 5)) {
+				pos += Vector3.back * 5;
+			}
+		}
+		if (!Mathf.Approximately (angle, transform.eulerAngles.y))
+			transform.rotation = Quaternion.RotateTowards (transform.rotation, Quaternion.Euler (0, angle, 0), Time.deltaTime * m_turnSpeed);
+		else
+			transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * m_moveSpeed);
+		if (Mathf.Approximately (angle, transform.eulerAngles.y) && transform.position == pos) {
+			moving = 0;
+			if (calleventnext) {
+				collision.callEvent (eventx, eventy);
+				calleventnext = false;
+			}
+		}
+		m_animator.SetFloat("MoveSpeed", m_moveSpeed * moving);
+		JumpingAndLanding();
+	}
+
+	public void GridMove(int i) {
+		move = i;
+		CompassUpdate ();
+		move = 0;
+	}
+
 	private bool CheckMovement(Vector3 position) {
 		int x = (int)position.x / 5;
 		int y = (int)position.z / 5;
@@ -207,10 +271,8 @@ public class CharacterControl : MonoBehaviour {
 		switch (collision.objects [x, y]) {
 			case -1:
 				return false;
-				break;
 			case 0:
 				return true;
-				break;
 			default:
 				eventx = x;
 				eventy = y;
@@ -223,7 +285,7 @@ public class CharacterControl : MonoBehaviour {
     {
         bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
 
-        if (jumpCooldownOver && m_isGrounded && Input.GetKey(KeyCode.Space))
+		if (jumpCooldownOver && m_isGrounded && Input.GetKey(KeyCode.LeftControl))
         {
             m_jumpTimeStamp = Time.time;
             m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);

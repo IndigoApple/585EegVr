@@ -9,7 +9,7 @@ public class EEGToController : MonoBehaviour {
 	public static int UP_ID = 1;
 	public static int DOWN_ID = 2;
 
-	public GameObject buttons;
+	public GameObject arrow;
 
 	private bool downQueue;
 	private bool upQueue;
@@ -26,10 +26,10 @@ public class EEGToController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (downQueue) {
-			buttons.GetComponent<MovementController>().direction = -1;
+			arrow.GetComponent<arrow_rotation>().direction = -1;
 		}
 		else if (upQueue) {
-			buttons.GetComponent<MovementController>().direction = 1;
+			arrow.GetComponent<arrow_rotation>().direction = 1;
 		}
 	}
 
@@ -41,6 +41,6 @@ public class EEGToController : MonoBehaviour {
 	}
 
 	void BlinkEvent() {
-		buttons.GetComponent<MovementController> ().move = true;
+		arrow.GetComponent<arrow_rotation> ().blinked ();
 	}
 }
