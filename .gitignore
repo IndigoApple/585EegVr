@@ -3,8 +3,9 @@ Temp/*
 .vs/*
 Build/*
 Library/*
-UnityPacketManager/*
+UnityPackageManager/*
 585*
 *.Editor
 *.sln
-*.log
+*.csproj
+*.userprefs
