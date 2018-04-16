@@ -81,9 +81,6 @@ public class EEGToController : MonoBehaviour {
             SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
             SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
             isTraining = false;
-
-            SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
-            SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
         }
 
 
