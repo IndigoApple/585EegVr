@@ -9,7 +9,6 @@ public class MovementController : MonoBehaviour {
 	{
 		Keys,
 		EEG,
-        Training,
 	}
 	[SerializeField] private ControlMode m_controlMode = ControlMode.Keys;
     public Button[] buttons = new Button[4];
