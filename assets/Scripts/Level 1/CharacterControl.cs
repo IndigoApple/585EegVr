@@ -7,6 +7,7 @@ public class CharacterControl : MonoBehaviour {
     {
         Tank,
 		Key,
+		Compass,
     }
 
 	[SerializeField] private Vector3 pos = Vector3.zero;
@@ -108,9 +109,13 @@ public class CharacterControl : MonoBehaviour {
                 KeyUpdate();
                 break;
 
-            case ControlMode.Tank:
-                TankUpdate();
+            case ControlMode.Compass:
+                CompassUpdate();
                 break;
+
+			case ControlMode.Tank:
+				TankUpdate();
+				break;
 
             default:
                 Debug.LogError("Unsupported state");
@@ -220,35 +225,41 @@ public class CharacterControl : MonoBehaviour {
 			moving = 1;
 			if (CheckMovement (pos + Vector3.left * 5)) {
 				pos += Vector3.left * 5;
-			}
+			} else
+				move = 0;
 		}
 		if(move == 2 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Right
 			angle = 90;
 			moving = 1;
 			if (CheckMovement (pos + Vector3.right * 5)) {
 				pos += Vector3.right * 5;
-			}
+			} else
+				move = 0;
 		}
 		if(move == 3 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Up
 			angle = 0;
 			moving = 1;
 			if (CheckMovement (pos + Vector3.forward * 5)) {
 				pos += Vector3.forward * 5;
-			}
+			} else
+				move = 0;
 		}
 		if(move == 4 && transform.position == pos && Mathf.Approximately(angle, transform.eulerAngles.y)) {        // Down
 			angle = 180;
 			moving = 1;
 			if (CheckMovement (pos + Vector3.back * 5)) {
 				pos += Vector3.back * 5;
-			}
+			} else
+				move = 0;
 		}
 		if (!Mathf.Approximately (angle, transform.eulerAngles.y))
 			transform.rotation = Quaternion.RotateTowards (transform.rotation, Quaternion.Euler (0, angle, 0), Time.deltaTime * m_turnSpeed);
 		else
 			transform.position = Vector3.MoveTowards(transform.position, pos, Time.deltaTime * m_moveSpeed);
 		if (Mathf.Approximately (angle, transform.eulerAngles.y) && transform.position == pos) {
-			moving = 0;
+			//move = 0;
+			if (move == 0)
+				moving = 0;
 			if (calleventnext) {
 				collision.callEvent (eventx, eventy);
 				calleventnext = false;
@@ -259,9 +270,12 @@ public class CharacterControl : MonoBehaviour {
 	}
 
 	public void GridMove(int i) {
-		move = i;
-		CompassUpdate ();
-		move = 0;
+		if (move != 0)
+			move = 0;
+		else {
+			move = i;
+			CompassUpdate ();
+		}
 	}
 
 	private bool CheckMovement(Vector3 position) {

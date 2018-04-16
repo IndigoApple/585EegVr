@@ -5315,7 +5315,7 @@ MonoBehaviour:
   m_animator: {fileID: 1793002534}
   m_rigidBody: {fileID: 1793002536}
   collision: {fileID: 1793002537}
-  m_controlMode: 1
+  m_controlMode: 2
   canmove: 1
   switchmove: 0
   move: 0
