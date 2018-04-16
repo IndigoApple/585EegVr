@@ -25,7 +25,7 @@ public class EEGToController : MonoBehaviour {
     private float _upTrainedTime;
     private float _downTrainedTime;
 
-    public float trainingTime = 30;
+    public float trainingTime = 2;
     public float timerTime = 10;
 
     public bool IsTraining { get { return isTraining; } }
@@ -38,6 +38,8 @@ public class EEGToController : MonoBehaviour {
         SharpBCIController.BCI.ClearTrainingData();
         started = Time.time;
         isTraining = true;
+        trainingUp = false;
+        trainingDown = false;
 		EEG.GetComponent<SharpBCIController> ().addBlinkHandler (BlinkEvent);
 		rotation = arrow.GetComponent<arrow_rotation>();
 	}
@@ -61,16 +63,15 @@ public class EEGToController : MonoBehaviour {
         if (trainingUp)
         {
             _upTrainedTime += Time.deltaTime;
-            Debug.Log("Trained up");
-
+            Debug.Log("up trained:" + _upTrainedTime.ToString());
         }
         else if (trainingDown)
         {
             _downTrainedTime += Time.deltaTime;
-            Debug.Log("Trained down");
+            Debug.Log("down trained:" + _downTrainedTime.ToString());
         }
 
-        if (isTraining && _upTrainedTime >= trainingTime && _downTrainedTime >= trainingTime)
+        if ((isTraining && _upTrainedTime >= trainingTime) && (_downTrainedTime >= trainingTime))
         {
             Debug.Log("Done Training");
             if (trainingDown)
@@ -80,10 +81,8 @@ public class EEGToController : MonoBehaviour {
 
             SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
             SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
+            Debug.Log("Added Trained Handlers");
             isTraining = false;
-
-            SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
-            SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
         }
 
 
@@ -99,7 +98,6 @@ public class EEGToController : MonoBehaviour {
                 SharpBCIController.BCI.StartTraining(DOWN_ID);
                 trainingDown = true;
             }
-
         }
         else if (Input.GetAxis("Vertical") > 0)
         {
@@ -133,9 +131,9 @@ public class EEGToController : MonoBehaviour {
 
     void TrainedEvent(TrainedEvent evt)
 	{
+        Debug.Log("trained event");
 		downQueue = evt.id == DOWN_ID;
 		upQueue = evt.id == UP_ID;
-
 	}
 
 	void BlinkEvent() {
