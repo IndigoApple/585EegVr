@@ -8,3 +8,5 @@ UnityPacketManager/*
 *.Editor
 *.sln
 *.log
+*.meta
+*.csv
