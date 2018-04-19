@@ -21,7 +21,6 @@ public class LoadLevel : MonoBehaviour {
 	// changes scene, but only if training is over
 	public void ChangeScene(string scenename) {
 		//if (!trainer.IsTraining)
-		print("hi");
-			SceneManager.LoadScene (scenename, LoadSceneMode.Single);
+		SceneManager.LoadScene (scenename, LoadSceneMode.Single);
 	}
 }
