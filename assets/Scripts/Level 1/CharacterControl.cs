@@ -17,7 +17,7 @@ public class CharacterControl : MonoBehaviour {
     [SerializeField] private float m_jumpForce = 4;
     [SerializeField] private Animator m_animator;
     [SerializeField] private Rigidbody m_rigidBody;
-	[SerializeField] private CollisionLevel1 collision;
+	[SerializeField] private Collision1 collision;
 
     [SerializeField] private ControlMode m_controlMode = ControlMode.Key;
 
@@ -270,6 +270,7 @@ public class CharacterControl : MonoBehaviour {
 	}
 
 	public void GridMove(int i) {
+		print (i+ " " + move);
 		if (move != 0)
 			move = 0;
 		else {
