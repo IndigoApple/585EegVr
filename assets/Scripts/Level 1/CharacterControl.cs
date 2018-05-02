@@ -270,7 +270,6 @@ public class CharacterControl : MonoBehaviour {
 	}
 
 	public void GridMove(int i) {
-		print (i+ " " + move);
 		if (move != 0)
 			move = 0;
 		else {
