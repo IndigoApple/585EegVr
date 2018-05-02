@@ -20,14 +20,15 @@ public class Trainer : MonoBehaviour
     private bool trainingUp;
     private bool trainingDown;
 
-    private float _upTrainedTime;
+    public float _upTrainedTime;
     private float _downTrainedTime;
 
     public float trainingTime = 2;
     public float timerTime = 10;
 
     public bool IsTraining { get { return isTraining; } }
-
+    public float upTrainedTime { get { return _upTrainedTime; } }
+    public float downTrainedTime { get { return _downTrainedTime; } }
     // Use this for initialization
     void Start()
     {
