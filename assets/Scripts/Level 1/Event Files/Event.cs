@@ -18,9 +18,15 @@ public class Event : MonoBehaviour
 
     private bool check()
     {
-        return ((status.eventNumber == 0 || 
-            (previousEvent.GetComponent<Event>().status.eventNumber == status.eventNumber-1 && previousEvent.GetComponent<Event>().hasStarted())) && 
-            (started == false));
+		if ((status.eventNumber == 0) && (started == false))
+			return true;
+        Event[] events = previousEvent.GetComponents<Event>();
+        foreach(Event e in events)
+        {
+            if ((e.status.eventNumber == status.eventNumber - 1 && e.hasStarted()) && (started == false))
+                return true;
+        }
+        return false;
     }
     public void initializer()
     {
