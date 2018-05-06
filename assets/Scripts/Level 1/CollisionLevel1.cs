@@ -25,7 +25,6 @@ public class CollisionLevel1 : Collision1 {
         objects [2,12] = -1;
 		objects [5,12] = -1;
 		objects [7,11] = -1;
-		objects [8,13] = -1;
 		objects [8,19] = -1;
 		objects [9,6] = -1;
 		objects [10,17] = -1;

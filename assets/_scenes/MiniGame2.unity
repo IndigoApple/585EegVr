@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -400,7 +400,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 64999357}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a334c0e0c76f3c145b7b5554fa6cdab0, type: 3}
+  m_Script: {fileID: 11500000, guid: f28ac76958c21744e98d66f1468bf24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   badColor: {r: 1, g: 0, b: 0, a: 1}
@@ -645,7 +645,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 385701547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7551763665adc4e87916d6b373c1f5, type: 3}
+  m_Script: {fileID: 11500000, guid: e18cecc2d1651d84e90c54681a29c3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   averageSize: 30
@@ -808,7 +808,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 464400851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a334c0e0c76f3c145b7b5554fa6cdab0, type: 3}
+  m_Script: {fileID: 11500000, guid: f28ac76958c21744e98d66f1468bf24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   badColor: {r: 1, g: 0, b: 0, a: 1}
@@ -1530,8 +1530,9 @@ GameObject:
   - component: {fileID: 1384139156}
   - component: {fileID: 1384139157}
   - component: {fileID: 1384139158}
-  - component: {fileID: 1384139159}
   - component: {fileID: 1384139160}
+  - component: {fileID: 1384139159}
+  - component: {fileID: 1384139161}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1667,11 +1668,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1384139150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a11fcf48fcca91744aa4bc8470a9ba93, type: 3}
+  m_Script: {fileID: 11500000, guid: 97a9cacdac596a947a3747260ae8028d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrow: {fileID: 52940286}
-  plane: {fileID: 944467243}
 --- !u!114 &1384139160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1680,10 +1679,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1384139150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4263c245e2daee847b56ea9587de1b9b, type: 3}
+  m_Script: {fileID: 11500000, guid: f1bc3be51e617e64e81df1fe95ad56d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   connectionInfoController: {fileID: 385701548}
+--- !u!114 &1384139161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1384139150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3192c74e9bdb0d5419356a06f0e55c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrow: {fileID: 52940286}
+  plane: {fileID: 944467243}
 --- !u!1 &1433501010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,7 +1707,6 @@ GameObject:
   - component: {fileID: 1433501013}
   - component: {fileID: 1433501012}
   - component: {fileID: 1433501011}
-  - component: {fileID: 1433501015}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1766,17 +1777,6 @@ Transform:
   m_Father: {fileID: 1384139155}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!114 &1433501015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1433501010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efe2a996ca3994480ae9c7b63aca3b86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1459294220
 GameObject:
   m_ObjectHideFlags: 0
@@ -2066,7 +2066,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1591172827}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a334c0e0c76f3c145b7b5554fa6cdab0, type: 3}
+  m_Script: {fileID: 11500000, guid: f28ac76958c21744e98d66f1468bf24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   badColor: {r: 1, g: 0, b: 0, a: 1}
@@ -2583,7 +2583,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1729786883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a334c0e0c76f3c145b7b5554fa6cdab0, type: 3}
+  m_Script: {fileID: 11500000, guid: f28ac76958c21744e98d66f1468bf24e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   badColor: {r: 1, g: 0, b: 0, a: 1}
