@@ -33,7 +33,7 @@ public class Training : MonoBehaviour {
         if (stage == stages.init)
         {
             plane.SetActive(false);
-            if (Input.GetKeyDown("space"))
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 plane.SetActive(true);
                 stage = stages.up;

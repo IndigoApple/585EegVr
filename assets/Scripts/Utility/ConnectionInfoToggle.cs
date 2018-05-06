@@ -12,7 +12,7 @@ public class ConnectionInfoToggle : MonoBehaviour {
     }
 
 	void Update() {
-		if (Input.GetKeyDown("space")) {
+		if (Input.GetKeyDown(KeyCode.C)) {
 			connectionInfoController.showStatus = !connectionInfoController.showStatus;
 		}
 	}

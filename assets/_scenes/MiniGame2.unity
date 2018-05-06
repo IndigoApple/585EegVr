@@ -723,6 +723,7 @@ RectTransform:
   m_Children:
   - {fileID: 1879658886}
   - {fileID: 1577461267}
+  - {fileID: 1726890346}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1113,7 +1114,6 @@ RectTransform:
   - {fileID: 580005845}
   - {fileID: 1176790816}
   - {fileID: 944467244}
-  - {fileID: 1726890346}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2033,7 +2033,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press Space to Toggle
+  m_Text: Press C to Toggle
 --- !u!222 &1577461269
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2444,12 +2444,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1726890345}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1041562817}
-  m_RootOrder: 3
+  m_Father: {fileID: 385701552}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2468,7 +2468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2503,7 +2503,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1726890345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c39baf4bc01dd841a6c3301614a6cc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 219f08c3349f79e4185a4cd045984fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1729786883

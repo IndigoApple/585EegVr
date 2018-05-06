@@ -70,27 +70,27 @@ public class arrow_rotation : MonoBehaviour {
 			arrow.GetComponentInChildren<Text> ().text = "Go right";
 			//Debug.Log ("right");
 			if (Input.GetKeyDown (KeyCode.Space)) 
-				movement(2);
+				player.GetComponent<CharacterControl> ().GridMove (2);
 		}
 		if (otherangle > 135 && otherangle <= 225) {
 			arrow.GetComponentInChildren<Text> ().text = "Go down";
 			//Debug.Log ("down");
 			if (Input.GetKeyDown (KeyCode.Space))
-				movement(4);
+				player.GetComponent<CharacterControl> ().GridMove (4);
 		}
 
 		if (otherangle >= 0 && otherangle <= 45 || otherangle <= 360 && otherangle > 325) {
 			arrow.GetComponentInChildren<Text> ().text = "Go up";
 			//Debug.Log ("up");
 			if (Input.GetKeyDown (KeyCode.Space))
-				movement(3);
+				player.GetComponent<CharacterControl> ().GridMove (3);
 		}
 
 		if (otherangle > 45 && otherangle <= 135) {
 			arrow.GetComponentInChildren<Text> ().text = "Go left";
 			//Debug.Log ("left");
 			if (Input.GetKeyDown (KeyCode.Space))
-				movement(1);
+				player.GetComponent<CharacterControl> ().GridMove (1);
 		}
 		OnPress ();
 		OnRelease ();
@@ -148,7 +148,7 @@ public class arrow_rotation : MonoBehaviour {
 				}
 				break;
 			case GameMode.Level1:
-				if (player.GetComponent<CharacterControl> ().move != 1 || blinked2) {
+				if (player.GetComponent<CharacterControl> ().move != 0 || blinked2) {
 					player.GetComponent<CharacterControl> ().GridMove (i);
 					blinked = false;
 					blinked2 = false;
