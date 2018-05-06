@@ -11,11 +11,14 @@ public class Event : MonoBehaviour
     public DialogueManager manager;
     public Text initial_Text;
     public Text NPCName;
-    public Image textBox;
+    public RawImage textBox;
     public Status status;
     private bool started = false;
 
-
+    public int getStatusEventNumber()
+    {
+        return status.eventNumber;
+    }
     private bool check()
     {
 		if ((status.eventNumber == 0) && (started == false))

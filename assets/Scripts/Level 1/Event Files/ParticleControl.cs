@@ -8,7 +8,11 @@ public class ParticleControl : MonoBehaviour {
     public GameObject Item;
 	// Use this for initialization
 	void Start () {
-        gameObject.GetComponent<ParticleSystem>().Stop();
+        if(Item.GetComponent<Event>().getStatusEventNumber() != 0)
+        {
+            gameObject.GetComponent<ParticleSystem>().Stop();
+
+        }
         InvokeRepeating("startEffects", 0,1);
 	}
 	
