@@ -9,3 +9,4 @@ UnityPackageManager/*
 *.sln
 *.csproj
 *.userprefs
+*.csv
