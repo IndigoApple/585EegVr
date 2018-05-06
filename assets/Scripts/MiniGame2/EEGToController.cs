@@ -18,15 +18,22 @@ public class EEGToController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		//add trained events so SharpBCI will call TrainedEvent
-		SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
-		SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
-		EEG.GetComponent<SharpBCIController> ().addBlinkHandler (BlinkEvent);
-		rotation = arrow.GetComponent<arrow_rotation>();
+        //add trained events so SharpBCI will call TrainedEvent
+        SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
+        SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
+        EEG.GetComponent<SharpBCIController>().addBlinkHandler(BlinkEvent);
+        rotation = arrow.GetComponent<arrow_rotation>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void Initialize()
+    {
+        SharpBCIController.BCI.AddTrainedHandler(DOWN_ID, TrainedEvent);
+        SharpBCIController.BCI.AddTrainedHandler(UP_ID, TrainedEvent);
+        EEG.GetComponent<SharpBCIController>().addBlinkHandler(BlinkEvent);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		if (downQueue) {
 			arrow.GetComponent<arrow_rotation>().direction = -1;
 		}

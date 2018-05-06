@@ -12,8 +12,6 @@ public class DialogueManager : MonoBehaviour {
 
     public void StartDialogue(ObjectDialogue dialogue)
     {
-		if (sentences.Count == 0)
-			return;
         Debug.Log("Starting conversation" + dialogue.name);
         sentences.Clear();
         foreach(string sentence in dialogue.sentences)

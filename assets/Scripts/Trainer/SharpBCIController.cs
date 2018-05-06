@@ -333,11 +333,10 @@ public class BlinkAdapter : EEGDeviceAdapter
                 UnityEngine.Debug.Log(msg.Address.ToString() + " blinked");
                 if (handled)
                 {
-                    UnityEngine.Debug.Log("It's alive");
 					bh();
                 } else
                 {
-                    UnityEngine.Debug.Log("It's dead");
+                    UnityEngine.Debug.Log("No Blink Handler Added Yet");
                 }
             }
         }
