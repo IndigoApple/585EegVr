@@ -23,9 +23,24 @@ public class CollisionLevel2 : Collision1
         }
         objects[11, 13] = 1;
         objects[13, 1] = 2;
-        objects[5, 17] = 3;
+        objects[9, 7] = 3;
         objects[17, 5] = 4;
-    }
+        objects[17, 5] = 5;
+        objects[9, 7] = 6;
+        objects[3, 12] = 7;
+        objects[13, 1] = 8;
+        objects[11, 13] = 9;
+        objects[1, 13] = -1;
+        objects[2, 13] = -1;
+        objects[2, 14] = -1;
+        objects[3, 14] = -1;
+        objects[1, 15] = -1;
+        objects[2, 15] = -1;
+        objects[9, 16] = -1;
+        objects[15, 19] = -1;
+        objects[16, 19] = -1;
+        objects[17, 19] = -1;
+        }
 
     public override void callEvent(int x, int y)
     {
