@@ -1658,7 +1658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EEG: {fileID: 2057832628}
   _upTrainedTime: 0
-  trainingTime: 2
+  trainingTime: 15
   timerTime: 10
 --- !u!114 &1384139159
 MonoBehaviour:
