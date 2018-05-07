@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionLevel1 : MonoBehaviour {
+public class CollisionLevel1 : Collision1 {
 
-	public int[,] objects = new int[21, 21];
+	//public int[,] objects = new int[21, 21];
 	[SerializeField] private GameObject[] obj;
 
 	// Use this for initialization
@@ -25,7 +25,6 @@ public class CollisionLevel1 : MonoBehaviour {
         objects [2,12] = -1;
 		objects [5,12] = -1;
 		objects [7,11] = -1;
-		objects [8,13] = -1;
 		objects [8,19] = -1;
 		objects [9,6] = -1;
 		objects [10,17] = -1;
@@ -39,14 +38,14 @@ public class CollisionLevel1 : MonoBehaviour {
 		objects [19,18] = -1;
 	}
 
-	public void callEvent(int x, int y) {
+	public override void callEvent(int x, int y) {
 		Event[] eventscripts = obj [objects [x, y]-1].GetComponents<Event> ();
 		foreach (Event script in eventscripts) {
 			script.OnTriggerEnter (null);
 		}
 	}
 
-	public void endEvent(int x, int y) {
+	public override void endEvent(int x, int y) {
 		Event[] eventscripts = obj [objects [x, y]-1].GetComponents<Event> ();
 		foreach (Event script in eventscripts) {
 			script.OnTriggerExit (null);

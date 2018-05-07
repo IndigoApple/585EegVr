@@ -11,16 +11,25 @@ public class Event : MonoBehaviour
     public DialogueManager manager;
     public Text initial_Text;
     public Text NPCName;
-    public Image textBox;
+    public RawImage textBox;
     public Status status;
     private bool started = false;
 
-
+    public int getStatusEventNumber()
+    {
+        return status.eventNumber;
+    }
     private bool check()
     {
-        return ((status.eventNumber == 0 || 
-            (previousEvent.GetComponent<Event>().status.eventNumber == status.eventNumber-1 && previousEvent.GetComponent<Event>().hasStarted())) && 
-            (started == false));
+		if ((status.eventNumber == 0) && (started == false))
+			return true;
+        Event[] events = previousEvent.GetComponents<Event>();
+        foreach(Event e in events)
+        {
+            if ((e.status.eventNumber == status.eventNumber - 1 && e.hasStarted()) && (started == false))
+                return true;
+        }
+        return false;
     }
     public void initializer()
     {

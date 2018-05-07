@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: assets/_scenes/MiniGame.unity
     guid: 86c972d4e14f147d490c7de2c970f90a
   - enabled: 0
@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: assets/_scenes/Forest Scene.unity
     guid: b7e63e0358dc2c64e84dd8d71e63a069
+  - enabled: 1
+    path: assets/_scenes/Snow Scene.unity
+    guid: 0bc54236a0d683f4c8cf4616d45dea7a
