@@ -1,2 +1,2 @@
 # 585EegVr
-Second initial demo before EEG and AR, includes first demo. 2nd demo is first level with movement using wasd to navigate through a quest sequence, with npc interactions. First demo has training scene for EEG which includes a minigame after, then transitions to a scene where player can navigate map using EEG.
+Final demo. First scene is EEG training scene with a compass movement system and a coin collecting minigame. Second and third scenes are game levels, where the player moves using the same compass system from the training. The player would move around the map and interact with NPCs to progress through quests. Completing the quest in the first level unlocks a portal to the second level, and completing the second level quests trigger a game end popup.
